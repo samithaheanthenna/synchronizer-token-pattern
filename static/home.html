@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Synchronizer Token Pattern</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body>
+    <form method="post" action="/comments">
+        <label for="comment">Write a comment</label>
+        <input id="comment" name="comment">
+        <br/>
+        <button type="submit" name="submit-btn" id="submit-btn">Comment</button>
+        <button type="submit" name="logout-btn" id="logout-btn" onclick="javascript: form.action='/logout';">Logout</button>
+        <p id="error" hidden>Invalid token</p>
+        <p id="success" hidden>Valid token</p>
+    </form>
+</body>
+
+<script>
+
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+    window.addEventListener('load', function() {
+        var error = document.getElementById("error");
+        var success = document.getElementById("success");
+        if (getParameterByName("status") && getParameterByName("status") === "failed"){
+            error.hidden = false;
+        } else if (getParameterByName("status") && getParameterByName("status") === "success"){
+            success.hidden = false;
+        } else {
+            success.hidden = true;
+            error.hidden = true;
+        }
+    })
+</script>
+</html>
